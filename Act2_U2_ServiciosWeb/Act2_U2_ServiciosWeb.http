@@ -1,0 +1,6 @@
+@Act2_U2_ServiciosWeb_HostAddress = http://localhost:5250
+
+GET {{Act2_U2_ServiciosWeb_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
