@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Act2_U2_ServiciosWeb.Controllers
 {
+    [ApiController]
+    [Route("api/estudiantes")]
     public class EstudiantesController: ControllerBase
     {
         // Lista estática en memoria: todos los endpoints compartiran esta misma lista
@@ -14,5 +16,16 @@ namespace Act2_U2_ServiciosWeb.Controllers
             new Estudiante { Id = 4, Nombre = "Adiel", Apellido = "Batista", Correo = "adiel.batista@ufhec.edu.do", Carrera = "Ingeniería de Software", Edad = 21, Promedio = 90.0m, Activo = true },
             new Estudiante { Id = 5, Nombre = "Sofía", Apellido = "Martínez", Correo = "sofia.martinez@ufhec.edu.do", Carrera = "Ingeniería de Sistemas", Edad = 19, Promedio = 78.5m, Activo = true }
         };
+
+        // Contador para generar IDs únicos al agregar nuevos estudiantes
+        private static int contadorId = 6;
+
+
+        // ENDPOINT 1: Obtener todos los estudiantes
+        [HttpGet("estudiantes")]
+        public IActionResult ObtenerTodos()
+        {
+            return Ok(listaEstudiantes);
+        }
     }
 }
