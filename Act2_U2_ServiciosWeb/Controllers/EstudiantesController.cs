@@ -74,5 +74,39 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return CreatedAtAction(nameof(ObtenerPorId), new { id = nuevoEstudiante.Id }, nuevoEstudiante);
         }
 
+
+        // ENDPOINT 4: Actualizar un estudiante completo
+        [HttpPut("{id}")]
+        public IActionResult Actualizar(int id, [FromBody] Estudiante estudianteActualizado)
+        {
+            // Buscar el estudiante a actualizar
+            Estudiante estudianteEncontrado = null;
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Id == id)
+                {
+                    estudianteEncontrado = e;
+                }
+            }
+
+            if (estudianteEncontrado == null)
+            {
+                return NotFound("No se encontró un estudiante con el Id " + id);
+            }
+
+            // Reemplazar todos los campos
+            estudianteEncontrado.Nombre = estudianteActualizado.Nombre;
+            estudianteEncontrado.Apellido = estudianteActualizado.Apellido;
+            estudianteEncontrado.Correo = estudianteActualizado.Correo;
+            estudianteEncontrado.Carrera = estudianteActualizado.Carrera;
+            estudianteEncontrado.Edad = estudianteActualizado.Edad;
+            estudianteEncontrado.Promedio = estudianteActualizado.Promedio;
+            estudianteEncontrado.Activo = estudianteActualizado.Activo;
+
+            // 204 NoContent: actualización exitosa, no hay nada que devolver
+            return NoContent();
+        }
+
     }
 }
