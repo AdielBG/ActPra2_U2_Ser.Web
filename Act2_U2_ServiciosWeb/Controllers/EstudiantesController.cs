@@ -27,5 +27,31 @@ namespace Act2_U2_ServiciosWeb.Controllers
         {
             return Ok(listaEstudiantes);
         }
+
+
+        // ENDPOINT 2: Obtener un estudiante por Id
+        [HttpGet("{id}")]
+        public IActionResult ObtenerPorId(int id)
+        {
+            // Buscar el estudiante en la lista
+            Estudiante estudianteEncontrado = null;
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Id == id)
+                {
+                    estudianteEncontrado = e;
+                }
+            }
+
+            // Si no se encontró, devolver 404
+            if (estudianteEncontrado == null)
+            {
+                return NotFound("No se encontró un estudiante con el Id " + id);
+            }
+
+            return Ok(estudianteEncontrado);
+        }
+
     }
 }
