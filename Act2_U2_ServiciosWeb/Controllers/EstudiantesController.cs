@@ -53,5 +53,26 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return Ok(estudianteEncontrado);
         }
 
+
+        // ENDPOINT 3: Agregar un nuevo estudiante
+        [HttpPost]
+        public IActionResult Agregar([FromBody] Estudiante nuevoEstudiante)
+        {
+            if (nuevoEstudiante == null)
+            {
+                return BadRequest("Los datos del estudiante no son válidos.");
+            }
+
+            // Asignar un Id automático
+            nuevoEstudiante.Id = contadorId;
+            contadorId = contadorId + 1;
+
+            // Agregar a la lista
+            listaEstudiantes.Add(nuevoEstudiante);
+
+            // 201 Created: devuelve el estudiante creado y la ruta para consultarlo
+            return CreatedAtAction(nameof(ObtenerPorId), new { id = nuevoEstudiante.Id }, nuevoEstudiante);
+        }
+
     }
 }
