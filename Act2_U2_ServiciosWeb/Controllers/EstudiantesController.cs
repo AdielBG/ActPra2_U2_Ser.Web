@@ -201,6 +201,100 @@ namespace Act2_U2_ServiciosWeb.Controllers
         }
 
 
+        // ENDPOINT 9: Ordenar la lista
+        [HttpGet("ordenar")]
+        public IActionResult Ordenar([FromQuery] string por, [FromQuery] string direccion)
+        {
+            // Copiar la lista para no modificar el orden original
+            List<Estudiante> resultado = new List<Estudiante>(listaEstudiantes);
+
+            // Ordenar según el campo indicado
+            if (por == "nombre")
+            {
+                // Ordenamiento burbuja simple por nombre
+                for (int i = 0; i < resultado.Count - 1; i++)
+                {
+                    for (int j = 0; j < resultado.Count - 1 - i; j++)
+                    {
+                        bool debeIntercambiar = false;
+
+                        if (direccion == "asc")
+                        {
+                            debeIntercambiar = string.Compare(resultado[j].Nombre, resultado[j + 1].Nombre) > 0;
+                        }
+                        else
+                        {
+                            debeIntercambiar = string.Compare(resultado[j].Nombre, resultado[j + 1].Nombre) < 0;
+                        }
+
+                        if (debeIntercambiar)
+                        {
+                            Estudiante temporal = resultado[j];
+                            resultado[j] = resultado[j + 1];
+                            resultado[j + 1] = temporal;
+                        }
+                    }
+                }
+            }
+            else if (por == "promedio")
+            {
+                for (int i = 0; i < resultado.Count - 1; i++)
+                {
+                    for (int j = 0; j < resultado.Count - 1 - i; j++)
+                    {
+                        bool debeIntercambiar = false;
+
+                        if (direccion == "asc")
+                        {
+                            debeIntercambiar = resultado[j].Promedio > resultado[j + 1].Promedio;
+                        }
+                        else
+                        {
+                            debeIntercambiar = resultado[j].Promedio < resultado[j + 1].Promedio;
+                        }
+
+                        if (debeIntercambiar)
+                        {
+                            Estudiante temporal = resultado[j];
+                            resultado[j] = resultado[j + 1];
+                            resultado[j + 1] = temporal;
+                        }
+                    }
+                }
+            }
+            else if (por == "edad")
+            {
+                for (int i = 0; i < resultado.Count - 1; i++)
+                {
+                    for (int j = 0; j < resultado.Count - 1 - i; j++)
+                    {
+                        bool debeIntercambiar = false;
+
+                        if (direccion == "asc")
+                        {
+                            debeIntercambiar = resultado[j].Edad > resultado[j + 1].Edad;
+                        }
+                        else
+                        {
+                            debeIntercambiar = resultado[j].Edad < resultado[j + 1].Edad;
+                        }
+
+                        if (debeIntercambiar)
+                        {
+                            Estudiante temporal = resultado[j];
+                            resultado[j] = resultado[j + 1];
+                            resultado[j + 1] = temporal;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return BadRequest("El campo de ordenamiento debe ser: nombre, promedio o edad.");
+            }
+
+            return Ok(resultado);
+        }
 
     }
 }
