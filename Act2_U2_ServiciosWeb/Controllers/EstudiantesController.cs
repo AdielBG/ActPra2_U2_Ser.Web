@@ -163,5 +163,24 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return Ok(resultado);
         }
 
+
+        // ENDPOINT 7: Filtrar por carrera
+        [HttpGet("carrera/{carrera}")]
+        public IActionResult PorCarrera(string carrera)
+        {
+            List<Estudiante> resultado = new List<Estudiante>();
+            string carreraBusqueda = carrera.ToLower();
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Carrera.ToLower() == carreraBusqueda)
+                {
+                    resultado.Add(e);
+                }
+            }
+
+            return Ok(resultado);
+        }
+
     }
 }
