@@ -108,5 +108,32 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return NoContent();
         }
 
+
+        // ENDPOINT 5: Eliminar un estudiante
+        [HttpDelete("{id}")]
+        public IActionResult Eliminar(int id)
+        {
+            // Buscar el estudiante a eliminar
+            Estudiante estudianteEncontrado = null;
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Id == id)
+                {
+                    estudianteEncontrado = e;
+                }
+            }
+
+            if (estudianteEncontrado == null)
+            {
+                return NotFound("No se encontró un estudiante con el Id " + id);
+            }
+
+            listaEstudiantes.Remove(estudianteEncontrado);
+
+            // 204 NoContent: eliminación exitosa
+            return NoContent();
+        }
+
     }
 }
