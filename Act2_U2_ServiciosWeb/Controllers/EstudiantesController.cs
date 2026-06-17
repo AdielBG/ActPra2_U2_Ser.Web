@@ -135,5 +135,33 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return NoContent();
         }
 
+
+        // ENDPOINT 6: Buscar por nombre o apellido
+        [HttpGet("buscar")]
+        public IActionResult Buscar([FromQuery] string texto)
+        {
+            if (texto == null || texto == "")
+            {
+                return BadRequest("Debe ingresar un texto para buscar.");
+            }
+
+            List<Estudiante> resultado = new List<Estudiante>();
+            string textoBusqueda = texto.ToLower();
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                // Convertir a minúsculas para que la búsqueda no distinga mayúsculas
+                string nombreMinusculas = e.Nombre.ToLower();
+                string apellidoMinusculas = e.Apellido.ToLower();
+
+                if (nombreMinusculas.Contains(textoBusqueda) || apellidoMinusculas.Contains(textoBusqueda))
+                {
+                    resultado.Add(e);
+                }
+            }
+
+            return Ok(resultado);
+        }
+
     }
 }
