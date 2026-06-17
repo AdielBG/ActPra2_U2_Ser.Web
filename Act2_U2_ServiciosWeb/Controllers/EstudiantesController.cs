@@ -182,5 +182,25 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return Ok(resultado);
         }
 
+
+        // ENDPOINT 8: Obtener aprobados por promedio mínimo
+        [HttpGet("aprobados")]
+        public IActionResult Aprobados([FromQuery] decimal promedioMinimo = 70)
+        {
+            List<Estudiante> resultado = new List<Estudiante>();
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Promedio >= promedioMinimo)
+                {
+                    resultado.Add(e);
+                }
+            }
+
+            return Ok(resultado);
+        }
+
+
+
     }
 }
