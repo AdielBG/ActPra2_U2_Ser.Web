@@ -296,5 +296,23 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return Ok(resultado);
         }
 
+
+        // ENDPOINT 10: Filtrar por rango de promedio
+        [HttpGet("rango")]
+        public IActionResult PorRango([FromQuery] decimal promedioDesde, [FromQuery] decimal promedioHasta)
+        {
+            List<Estudiante> resultado = new List<Estudiante>();
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Promedio >= promedioDesde && e.Promedio <= promedioHasta)
+                {
+                    resultado.Add(e);
+                }
+            }
+
+            return Ok(resultado);
+        }
+
     }
 }
