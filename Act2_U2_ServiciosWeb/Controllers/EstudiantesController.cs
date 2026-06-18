@@ -314,5 +314,60 @@ namespace Act2_U2_ServiciosWeb.Controllers
             return Ok(resultado);
         }
 
+
+        // ENDPOINT 11: Estadísticas generales
+        [HttpGet("estadisticas")]
+        public IActionResult Estadisticas()
+        {
+            if (listaEstudiantes.Count == 0)
+            {
+                return Ok(new { mensaje = "No hay estudiantes registrados." });
+            }
+
+            int total = listaEstudiantes.Count;
+            int aprobados = 0;
+            int reprobados = 0;
+            decimal sumaPromedios = 0;
+            decimal mejorPromedio = listaEstudiantes[0].Promedio;
+            decimal peorPromedio = listaEstudiantes[0].Promedio;
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                sumaPromedios = sumaPromedios + e.Promedio;
+
+                if (e.Promedio >= 70)
+                {
+                    aprobados = aprobados + 1;
+                }
+                else
+                {
+                    reprobados = reprobados + 1;
+                }
+
+                if (e.Promedio > mejorPromedio)
+                {
+                    mejorPromedio = e.Promedio;
+                }
+
+                if (e.Promedio < peorPromedio)
+                {
+                    peorPromedio = e.Promedio;
+                }
+            }
+
+            decimal promedioGeneral = sumaPromedios / total;
+
+            return Ok(new
+            {
+                totalEstudiantes = total,
+                aprobados = aprobados,
+                reprobados = reprobados,
+                promedioGeneral = Math.Round(promedioGeneral, 2),
+                mejorPromedio = mejorPromedio,
+                peorPromedio = peorPromedio
+            });
+        }
+
+
     }
 }
