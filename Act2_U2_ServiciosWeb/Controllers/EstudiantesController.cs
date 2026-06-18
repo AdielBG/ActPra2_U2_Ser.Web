@@ -396,5 +396,24 @@ namespace Act2_U2_ServiciosWeb.Controllers
         }
 
 
+
+        // ENDPOINT 13: Obtener solo estudiantes activos
+        [HttpGet("activos")]
+        public IActionResult ObtenerActivos()
+        {
+            List<Estudiante> resultado = new List<Estudiante>();
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Activo == true)
+                {
+                    resultado.Add(e);
+                }
+            }
+
+            return Ok(resultado);
+        }
+
+
     }
 }
