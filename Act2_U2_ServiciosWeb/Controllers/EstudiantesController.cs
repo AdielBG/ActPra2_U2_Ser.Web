@@ -369,5 +369,32 @@ namespace Act2_U2_ServiciosWeb.Controllers
         }
 
 
+
+        // ENDPOINT 12: Activar o desactivar un estudiante
+        [HttpPut("{id}/estado")]
+        public IActionResult CambiarEstado(int id, [FromQuery] bool activo)
+        {
+            Estudiante estudianteEncontrado = null;
+
+            foreach (Estudiante e in listaEstudiantes)
+            {
+                if (e.Id == id)
+                {
+                    estudianteEncontrado = e;
+                }
+            }
+
+            if (estudianteEncontrado == null)
+            {
+                return NotFound("No se encontró un estudiante con el Id " + id);
+            }
+
+            // Solo modificamos el campo Activo, sin tocar el resto
+            estudianteEncontrado.Activo = activo;
+
+            return NoContent();
+        }
+
+
     }
 }
