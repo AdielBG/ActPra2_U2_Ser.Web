@@ -1,5 +1,7 @@
 ﻿using Act2_U2_ServiciosWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Act2_U2_ServiciosWeb.Controllers
 {
@@ -205,30 +207,44 @@ namespace Act2_U2_ServiciosWeb.Controllers
         [HttpGet("ordenar")]
         public IActionResult Ordenar([FromQuery] string por, [FromQuery] string direccion)
         {
-            // Copiar la lista para no modificar el orden original
+            // Se crea una copia para no alterar el orden original de la lista
             List<Estudiante> resultado = new List<Estudiante>(listaEstudiantes);
 
-            // Ordenar según el campo indicado
+            // Ordenamiento por nombre
             if (por == "nombre")
             {
-                // Ordenamiento burbuja simple por nombre
-                for (int i = 0; i < resultado.Count - 1; i++)
+                // Bubble Sort - Ordenamiento burbuja
+                for (int i = 0; i < resultado.Count - 1; i++) //repite las pasadas necesarias.
                 {
-                    for (int j = 0; j < resultado.Count - 1 - i; j++)
+                    for (int j = 0; j < resultado.Count - 1 - i; j++) //compara e intercambia elementos vecinos dentro de cada pasada.
                     {
                         bool debeIntercambiar = false;
 
                         if (direccion == "asc")
                         {
-                            debeIntercambiar = string.Compare(resultado[j].Nombre, resultado[j + 1].Nombre) > 0;
-                        }
+                            // Si el nombre actual va después del siguiente, se intercambian
+                            debeIntercambiar = string.Compare(
+                                resultado[j].Nombre,
+                                resultado[j + 1].Nombre) > 0;
+                        }//string.Compare() sirve para comparar dos cadenas de texto (strings) y
+                         //determinar cuál va antes o después alfabéticamente.
+                        
+                        //Valor que devuelve:
+                        //Menor que 0(< 0): cadena1 va antes que cadena2.
+                        //Igual a 0(== 0): ambas cadenas son iguales.
+                        //Mayor que 0(> 0): cadena1 va después que cadena2.
+                        
                         else
                         {
-                            debeIntercambiar = string.Compare(resultado[j].Nombre, resultado[j + 1].Nombre) < 0;
+                            // Para descendente, el criterio se invierte
+                            debeIntercambiar = string.Compare(
+                                resultado[j].Nombre,
+                                resultado[j + 1].Nombre) < 0;
                         }
 
                         if (debeIntercambiar)
                         {
+                            // Intercambio de posiciones
                             Estudiante temporal = resultado[j];
                             resultado[j] = resultado[j + 1];
                             resultado[j + 1] = temporal;
@@ -236,6 +252,7 @@ namespace Act2_U2_ServiciosWeb.Controllers
                     }
                 }
             }
+            // Ordenamiento por promedio
             else if (por == "promedio")
             {
                 for (int i = 0; i < resultado.Count - 1; i++)
@@ -246,11 +263,15 @@ namespace Act2_U2_ServiciosWeb.Controllers
 
                         if (direccion == "asc")
                         {
-                            debeIntercambiar = resultado[j].Promedio > resultado[j + 1].Promedio;
+                            // Menor promedio primero
+                            debeIntercambiar =
+                                resultado[j].Promedio > resultado[j + 1].Promedio;
                         }
                         else
                         {
-                            debeIntercambiar = resultado[j].Promedio < resultado[j + 1].Promedio;
+                            // Mayor promedio primero
+                            debeIntercambiar =
+                                resultado[j].Promedio < resultado[j + 1].Promedio;
                         }
 
                         if (debeIntercambiar)
@@ -262,6 +283,7 @@ namespace Act2_U2_ServiciosWeb.Controllers
                     }
                 }
             }
+            // Ordenamiento por edad
             else if (por == "edad")
             {
                 for (int i = 0; i < resultado.Count - 1; i++)
@@ -272,11 +294,15 @@ namespace Act2_U2_ServiciosWeb.Controllers
 
                         if (direccion == "asc")
                         {
-                            debeIntercambiar = resultado[j].Edad > resultado[j + 1].Edad;
+                            // De menor a mayor edad
+                            debeIntercambiar =
+                                resultado[j].Edad > resultado[j + 1].Edad;
                         }
                         else
                         {
-                            debeIntercambiar = resultado[j].Edad < resultado[j + 1].Edad;
+                            // De mayor a menor edad
+                            debeIntercambiar =
+                                resultado[j].Edad < resultado[j + 1].Edad;
                         }
 
                         if (debeIntercambiar)
@@ -290,9 +316,12 @@ namespace Act2_U2_ServiciosWeb.Controllers
             }
             else
             {
-                return BadRequest("El campo de ordenamiento debe ser: nombre, promedio o edad.");
+                // Solo se permiten estos campos para ordenar
+                return BadRequest(
+                    "El campo de ordenamiento debe ser: nombre, promedio o edad.");
             }
 
+            // Retorna la lista ya ordenada
             return Ok(resultado);
         }
 
